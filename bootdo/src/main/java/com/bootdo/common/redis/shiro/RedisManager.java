@@ -7,15 +7,23 @@ package com.bootdo.common.redis.shiro;
 
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
+import javax.annotation.Resource;
+
 /**
  *
  */
+@Component
 public class RedisManager {
+    @Resource
+    RedisTemplate<byte[], byte[]> redisTemplate;
 
     @Value("${spring.redis.host}")
     private String host = "127.0.0.1";
@@ -62,16 +70,17 @@ public class RedisManager {
      * @return
      */
     public byte[] get(byte[] key) {
-        byte[] value = null;
-        Jedis jedis = jedisPool.getResource();
-        try {
-            value = jedis.get(key);
-        } finally {
-            if (jedis != null) {
-                jedis.close();
-            }
-        }
-        return value;
+//        byte[] value = null;
+//        Jedis jedis = jedisPool.getResource();
+//        try {
+//            value = jedis.get(key);
+//        } finally {
+//            if (jedis != null) {
+//                jedis.close();
+//            }
+//        }
+//        return value;
+        return redisTemplate.opsForValue().get(key);
     }
 
     /**
@@ -82,17 +91,19 @@ public class RedisManager {
      * @return
      */
     public byte[] set(byte[] key, byte[] value) {
-        Jedis jedis = jedisPool.getResource();
-        try {
-            jedis.set(key, value);
-            if (this.expire != 0) {
-                jedis.expire(key, this.expire);
-            }
-        } finally {
-            if (jedis != null) {
-                jedis.close();
-            }
-        }
+//        Jedis jedis = jedisPool.getResource();
+//        try {
+//            jedis.set(key, value);
+//            if (this.expire != 0) {
+//                jedis.expire(key, this.expire);
+//            }
+//        } finally {
+//            if (jedis != null) {
+//                jedis.close();
+//            }
+//        }
+//        return value;
+        redisTemplate.opsForValue().set(key, value);
         return value;
     }
 
@@ -105,17 +116,19 @@ public class RedisManager {
      * @return
      */
     public byte[] set(byte[] key, byte[] value, int expire) {
-        Jedis jedis = jedisPool.getResource();
-        try {
-            jedis.set(key, value);
-            if (expire != 0) {
-                jedis.expire(key, expire);
-            }
-        } finally {
-            if (jedis != null) {
-                jedis.close();
-            }
-        }
+//        Jedis jedis = jedisPool.getResource();
+//        try {
+//            jedis.set(key, value);
+//            if (expire != 0) {
+//                jedis.expire(key, expire);
+//            }
+//        } finally {
+//            if (jedis != null) {
+//                jedis.close();
+//            }
+//        }
+//        return value;
+        redisTemplate.opsForValue().set(key, value);
         return value;
     }
 
